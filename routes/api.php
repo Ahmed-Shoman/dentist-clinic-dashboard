@@ -30,3 +30,18 @@ Route::apiResource('certified-dentists', CertifiedDentistController::class);
 use App\Http\Controllers\Api\PlanController;
 
 Route::apiResource('plans', PlanController::class);
+
+
+use App\Http\Controllers\Api\StatisticController;
+
+Route::apiResource('statistics', StatisticController::class);
+
+use App\Http\Controllers\Api\DentalNewsController;
+
+Route::apiResource('dental-news', DentalNewsController::class);
+
+Route::apiResource('our-services', \App\Http\Controllers\Api\OurServiceController::class);
+
+use App\Http\Controllers\Api\ProfessionalDoctorController;
+
+Route::apiResource('professional-doctors', ProfessionalDoctorController::class);

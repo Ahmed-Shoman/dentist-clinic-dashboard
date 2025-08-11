@@ -30,6 +30,8 @@ class CategoryResource extends Resource
 
   public static function form(Form $form): Form
 {
+
+    
     return $form->schema([
         Section::make('Image & Details')
             ->schema([

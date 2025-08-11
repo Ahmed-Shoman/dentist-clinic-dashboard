@@ -7,13 +7,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class BlogPostResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'image' => asset('storage/' . $this->image),
+            'published_at' => $this->published_at?->format('Y-m-d'),
+            'author' => $this->getTranslation('author', app()->getLocale()),
+            'title' => $this->getTranslation('title', app()->getLocale()),
+            'description' => $this->getTranslation('description', app()->getLocale()),
+            'category' => new CategoryResource($this->whenLoaded('category')),
+        ];
     }
 }

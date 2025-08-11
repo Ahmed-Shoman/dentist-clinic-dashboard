@@ -1,14 +1,13 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CertifiedDentist extends Model
+class Statistic extends Model
 {
     protected $fillable = [
-        'image',
+        'number',
         'name',
-        'position',
-        'years_of_experience',
     ];
 }
