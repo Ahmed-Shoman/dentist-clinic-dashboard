@@ -9,59 +9,82 @@ use Filament\Tables;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\TextInput;
 
 class HeroSectionResource extends Resource
 {
     protected static ?string $model = HeroSection::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-user';
-    protected static ?string $navigationGroup = 'Home Page';
-    protected static ?string $navigationLabel = 'Hero Section';
-    protected static ?string $pluralModelLabel = 'Hero Sections';
 
-  public static function form(Form $form): Form
-{
-    return $form->schema([
-        Forms\Components\Grid::make(2)
-            ->schema([
-                Forms\Components\Section::make('Hero Content')
-                    ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Textarea::make('description')
-                            ->required(),
-                    ])
-                    ->columnSpan(1),
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.home_page');
+    }
 
-                Forms\Components\Section::make('Hero Image')
-                    ->schema([
-                        Forms\Components\FileUpload::make('image')
-                            ->image()
-                            ->directory('hero-section')
-                            ->label('Hero Image'),
-                    ])
-                    ->columnSpan(1),
-            ]),
-    ]);
-}
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.hero_section');
+    }
 
+    public static function form(Form $form): Form
+    {
+        return $form->schema([
+            Forms\Components\Grid::make(2)
+                ->schema([
+                    Forms\Components\Section::make(__('admin.hero_content'))
+                        ->schema([
+                            Forms\Components\TextInput::make('title')
+                                ->label(__('admin.title'))
+                                ->required()
+                                ->maxLength(255),
+                            Forms\Components\Textarea::make('description')
+                                ->label(__('admin.description'))
+                                ->required(),
+                        ])
+                        ->columnSpan(1),
+
+                    Forms\Components\Section::make(__('admin.hero_image'))
+                        ->schema([
+                            Forms\Components\FileUpload::make('image')
+                                ->label(__('admin.hero_image'))
+                                ->image()
+                                ->directory('hero-section'),
+                        ])
+                        ->columnSpan(1),
+                ]),
+        ]);
+    }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')->searchable(),
-                Tables\Columns\TextColumn::make('description')->limit(50),
-                Tables\Columns\ImageColumn::make('image')->label('Image'),
-                Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Created'),
+                Tables\Columns\TextColumn::make('title')
+                    ->label(__('admin.title'))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->label(__('admin.description'))
+                    ->limit(50),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label(__('admin.image')),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('admin.created'))
+                    ->dateTime(),
+            ])
+            ->filters([
+                Filter::make('title')
+                    ->form([
+                        TextInput::make('title')->label(__('admin.title')),
+                    ])
+                    ->query(fn($query, $data) => $query->when($data['title'] ?? null, fn($q, $value) => $q->where('title', 'like', "%{$value}%"))),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->label(__('admin.edit')),
+                Tables\Actions\DeleteAction::make()->label(__('admin.delete')),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()->label(__('admin.delete')),
             ]);
     }
 

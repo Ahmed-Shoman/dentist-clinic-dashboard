@@ -8,76 +8,107 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Filters\Filter;
 
 class CertifiedDentistResource extends Resource
 {
     protected static ?string $model = CertifiedDentist::class;
-
-        protected static ?string $navigationGroup = 'Home Page';
-
-
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
-   public static function form(Form $form): Form
-{
-    return $form->schema([
-        Forms\Components\Section::make('Dentist Info')
-            ->description('Basic information about the certified dentist')
-            ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255)
-                    ->columnSpan(2),
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.home_page');
+    }
 
-                TextInput::make('position')
-                    ->required()
-                    ->maxLength(255)
-                    ->columnSpan(2),
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.certified_dentist');
+    }
 
-                TextInput::make('years_of_experience')
-                    ->label('Years of Experience')
-                    ->numeric()
-                    ->required()
-                    ->minValue(0)
-                    ->columnSpan(1),
-            ])
-            ->columns(3),
+    public static function form(Form $form): Form
+    {
+        return $form->schema([
+            Forms\Components\Section::make(__('admin.dentist_info'))
+                ->description(__('admin.dentist_info_description'))
+                ->schema([
+                    TextInput::make('name')
+                        ->label(__('admin.name'))
+                        ->required()
+                        ->maxLength(255)
+                        ->columnSpan(2),
 
-        Forms\Components\Section::make('Profile Image')
-            ->schema([
-                FileUpload::make('image')
-                    ->image()
-                    ->directory('certified-dentists')
-                    ->required(),
-            ]),
-    ]);
-}
+                    TextInput::make('position')
+                        ->label(__('admin.position'))
+                        ->required()
+                        ->maxLength(255)
+                        ->columnSpan(2),
 
+                    TextInput::make('years_of_experience')
+                        ->label(__('admin.years_of_experience'))
+                        ->numeric()
+                        ->required()
+                        ->minValue(0)
+                        ->columnSpan(1),
+                ])
+                ->columns(3),
+
+            Forms\Components\Section::make(__('admin.profile_image'))
+                ->schema([
+                    FileUpload::make('image')
+                        ->label(__('admin.image'))
+                        ->image()
+                        ->directory('certified-dentists')
+                        ->required(),
+                ]),
+        ]);
+    }
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            ImageColumn::make('image')
-                ->label('Image')
-                ->square()
-                ->size(50),
+        return $table
+            ->columns([
+                ImageColumn::make('image')
+                    ->label(__('admin.image'))
+                    ->square()
+                    ->size(50),
 
-            TextColumn::make('name')
-                ->searchable()
-                ->sortable(),
+                TextColumn::make('name')
+                    ->label(__('admin.name'))
+                    ->searchable()
+                    ->sortable(),
 
-            TextColumn::make('position')
-                ->searchable(),
+                TextColumn::make('position')
+                    ->label(__('admin.position'))
+                    ->searchable(),
 
-            TextColumn::make('years_of_experience')
-                ->label('Years of Experience')
-                ->sortable(),
-        ]);
+                TextColumn::make('years_of_experience')
+                    ->label(__('admin.years_of_experience'))
+                    ->sortable(),
+            ])
+            ->filters([
+                // فلتر الاسم
+                Filter::make('name')
+                    ->form([
+                        TextInput::make('name')->label(__('admin.name')),
+                    ])
+                    ->query(fn($query, array $data) => $query->when($data['name'] ?? null, fn($q, $value) => $q->where('name', 'like', "%{$value}%"))),
+
+                Filter::make('position')
+                    ->form([
+                        TextInput::make('position')->label(__('admin.position')),
+                    ])
+                    ->query(fn($query, array $data) => $query->when($data['position'] ?? null, fn($q, $value) => $q->where('position', 'like', "%{$value}%"))),
+
+                Filter::make('years_of_experience')
+                    ->form([
+                        TextInput::make('years_of_experience')->label(__('admin.years_of_experience')),
+                    ])
+                    ->query(fn($query, array $data) => $query->when($data['years_of_experience'] ?? null, fn($q, $value) => $q->where('years_of_experience', $value))),
+            ]);
     }
 
     public static function getPages(): array

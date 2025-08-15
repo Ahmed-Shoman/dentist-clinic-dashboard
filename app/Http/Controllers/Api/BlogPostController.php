@@ -3,37 +3,36 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\BlogPost;
 use App\Http\Resources\BlogPostResource;
+use App\Models\BlogPost;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BlogPostController extends Controller
 {
+    /**
+     * GET /api/blog-posts
+     */
     public function index()
     {
-        $blogs = BlogPost::with('category')->latest()->get();
-        return BlogPostResource::collection($blogs);
+        $posts = BlogPost::with('category')->latest()->get();
+        return BlogPostResource::collection($posts);
     }
 
+    /**
+     * GET /api/blog-posts/{id}
+     */
     public function show($id)
     {
-        $blog = BlogPost::with('category')->findOrFail($id);
-        return new BlogPostResource($blog);
+        $post = BlogPost::with('category')->findOrFail($id);
+        return new BlogPostResource($post);
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'image' => 'nullable|string',
-            'published_at' => 'nullable|date',
-            'author' => 'required|string|max:255',
-            'title' => 'required',
-            'description' => 'required|array',
-            'category_id' => 'nullable|exists:categories,id',
-        ]);
-
-        $blog = BlogPost::create($data);
-
-        return new BlogPostResource($blog);
-    }
+    /**
+     * POST /api/blog-posts
+     */
 }
+    /**
+     * PUT/PATCH /api/blog-posts/{id}
+     */
+    -

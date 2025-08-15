@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'stie-name'=>[
+                       env('site_name','default-site-name'),
+
+
+    ]
+
 ];

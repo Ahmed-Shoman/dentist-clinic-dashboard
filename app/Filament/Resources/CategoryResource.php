@@ -16,66 +16,98 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Forms\Components\Section;
-
+use Filament\Tables\Filters\Filter;
 
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-tag';
-    protected static ?string $navigationLabel = 'Categories';
-    protected static ?string $pluralLabel = 'Categories';
-    protected static ?string $modelLabel = 'Category';
-    protected static ?string $slug = 'categories'; // URL: /admin/categories
+    protected static ?string $slug = 'categories';
 
-  public static function form(Form $form): Form
-{
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.categories');
+    }
 
-    
-    return $form->schema([
-        Section::make('Image & Details')
-            ->schema([
-                FileUpload::make('image')
-                    ->label('Category Image')
-                    ->image()
-                    ->directory('categories')
-                    ->imagePreviewHeight('150')
-                    ->maxSize(1024),
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.categories');
+    }
 
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
+    public static function form(Form $form): Form
+    {
+        return $form->schema([
+            Section::make(__('admin.image_details'))
+                ->schema([
+                    FileUpload::make('image')
+                        ->label(__('admin.category_image'))
+                        ->image()
+                        ->directory('categories')
+                        ->imagePreviewHeight('150')
+                        ->maxSize(1024),
 
-                Textarea::make('description')
-                    ->maxLength(1000),
-            ])
-            ->columns(1),
-    ]);
-}
+                    TextInput::make('name')
+                        ->label(__('admin.name'))
+                        ->required()
+                        ->maxLength(255),
+
+                    Textarea::make('description')
+                        ->label(__('admin.description'))
+                        ->maxLength(1000),
+                ])
+                ->columns(1),
+        ]);
+    }
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            ImageColumn::make('image')
-                ->label('Image')
-                ->circular()
-                ->height(50),
+        return $table
+            ->columns([
+                ImageColumn::make('image')
+                    ->label(__('admin.image'))
+                    ->circular()
+                    ->height(50),
 
-            TextColumn::make('name')
-                ->sortable()
-                ->searchable(),
+                TextColumn::make('name')
+                    ->label(__('admin.name'))
+                    ->sortable()
+                    ->searchable(),
 
-            TextColumn::make('description')
-                ->limit(50),
-        ])
-        ->actions([
-            EditAction::make(),
-        ])
-        ->bulkActions([
-            BulkActionGroup::make([
-                DeleteBulkAction::make(),
-            ]),
-        ]);
+                TextColumn::make('description')
+                    ->label(__('admin.description'))
+                    ->limit(50),
+            ])
+            ->filters([
+                // فلتر على الاسم
+                Filter::make('name')
+                    ->label(__('admin.name'))
+                    ->form([
+                        TextInput::make('name')->label(__('admin.name')),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['name'] ?? null, fn($q, $value) => $q->where('name', 'like', "%{$value}%"));
+                    }),
+
+                // فلتر على الوصف
+                Filter::make('description')
+                    ->label(__('admin.description'))
+                    ->form([
+                        TextInput::make('description')->label(__('admin.description')),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['description'] ?? null, fn($q, $value) => $q->where('description', 'like', "%{$value}%"));
+                    }),
+            ])
+            ->actions([
+                EditAction::make()->label(__('admin.edit')),
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()->label(__('admin.delete')),
+                ]),
+            ]);
     }
 
     public static function getPages(): array

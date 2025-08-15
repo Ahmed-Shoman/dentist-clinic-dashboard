@@ -3,24 +3,29 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Translatable\HasTranslations;
-
 
 class BlogPost extends Model
 {
-    // use HasTranslations;
-
-
-
     use HasTranslations;
 
-     protected $fillable = ['image', 'published_at', 'author', 'title', 'description', 'category_id'];
+    protected $fillable = [
+        'image',
+        'title',
+        // 'author',
+        'description',
+        'category_id',
+        'created_at',
+    ];
 
-    public $translatable = ['author', 'title', 'description'];
+    public array $translatable = [
+        'title',
+        // 'author',
+        'description',
+    ];
 
-
-
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }

@@ -16,4 +16,11 @@ class AboutUs extends Model
         'phone_number',
         'doctor_image',
     ];
+
+    public array $translatable = [
+        'title',
+        'description',
+        'sub_title',
+        'sub_description',
+    ];
 }

@@ -1,7 +1,5 @@
 <?php
 
-// app/Filament/Resources/PlanResource.php
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PlanResource\Pages;
@@ -12,61 +10,65 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Tables\Columns\TextColumn;
-
 class PlanResource extends Resource
 {
     protected static ?string $model = Plan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user';
-    protected static ?string $navigationGroup = 'Home Page';
+    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
-   public static function form(Form $form): Form
-{
-    return $form->schema([
-        Forms\Components\Section::make('Plan Details')
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.plans');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.home_page');
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
             ->schema([
-                Forms\Components\Grid::make(2)
-                    ->schema([
-                        TextInput::make('plan_name')
-                            ->label('Plan Name')
-                            ->required()
-                            ->maxLength(255),
-
-                        TextInput::make('price')
-                            ->label('Price or Cost')
-                            ->numeric()
-                            ->required(),
-                    ]),
-
-                Textarea::make('description')
-                    ->label('Description')
+                Forms\Components\TextInput::make('plan_name')
+                    ->label(__('admin.plan_name'))
+                    ->required(),
+                Forms\Components\TextInput::make('price')
+                    ->label(__('admin.price'))
                     ->required()
-                    ->rows(4),
-            ])
-            ->columns(1)
-            ->collapsible()
-            ->collapsed(false),
-    ]);
-}
-
+                    ->numeric(),
+                Forms\Components\Textarea::make('description')
+                    ->label(__('admin.description')),
+            ]);
+    }
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            TextColumn::make('plan_name')
-                ->searchable()
-                ->sortable(),
-
-            TextColumn::make('price')
-                ->label('Price')
-                ->sortable(),
-
-            TextColumn::make('description')
-                ->limit(50),
-        ]);
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('plan_name')
+                    ->label(__('admin.plan_name'))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('price')
+                    ->label(__('admin.price'))
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->label(__('admin.description'))
+                    ->limit(50),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('admin.created'))
+                    ->dateTime(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make()
+                    ->label(__('admin.edit')),
+                Tables\Actions\DeleteAction::make()
+                    ->label(__('admin.delete')),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make()
+                    ->label(__('admin.delete')),
+            ]);
     }
 
     public static function getPages(): array

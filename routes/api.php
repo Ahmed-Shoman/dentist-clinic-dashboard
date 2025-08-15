@@ -45,3 +45,8 @@ Route::apiResource('our-services', \App\Http\Controllers\Api\OurServiceControlle
 use App\Http\Controllers\Api\ProfessionalDoctorController;
 
 Route::apiResource('professional-doctors', ProfessionalDoctorController::class);
+
+
+use App\Http\Controllers\API\CommentController;
+
+Route::apiResource('comments', CommentController::class);

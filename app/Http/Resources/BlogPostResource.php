@@ -2,21 +2,27 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BlogPostResource extends JsonResource
 {
-    public function toArray(Request $request): array
+    /**
+     * Transform the resource into an array.
+     */
+    public function toArray($request): array
     {
         return [
-            'id' => $this->id,
-            'image' => asset('storage/' . $this->image),
-            'published_at' => $this->published_at?->format('Y-m-d'),
-            'author' => $this->getTranslation('author', app()->getLocale()),
-            'title' => $this->getTranslation('title', app()->getLocale()),
-            'description' => $this->getTranslation('description', app()->getLocale()),
-            'category' => new CategoryResource($this->whenLoaded('category')),
+            'id'          => $this->id,
+            'title'       => $this->title,
+            'author'      => $this->author,
+            'description' => $this->description,
+            'image'       => $this->image,
+            'category'    => $this->category ? [
+                'id'   => $this->category->id,
+                'name' => $this->category->name,
+            ] : null,
+            'created_at'  => $this->created_at->toDateTimeString(),
+            'updated_at'  => $this->updated_at->toDateTimeString(),
         ];
     }
 }
