@@ -11,9 +11,11 @@ class CategoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'image' => $this->image ? asset('storage/' . $this->image) : null,
+            'name' => $this->getTranslations('name'),
+            'description' => $this->getTranslations('description'),
+            'image' => $this->image,
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }

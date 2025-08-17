@@ -13,7 +13,6 @@ class BlogPost extends Model
     protected $fillable = [
         'image',
         'title',
-        // 'author',
         'description',
         'category_id',
         'created_at',
@@ -21,7 +20,6 @@ class BlogPost extends Model
 
     public array $translatable = [
         'title',
-        // 'author',
         'description',
     ];
 

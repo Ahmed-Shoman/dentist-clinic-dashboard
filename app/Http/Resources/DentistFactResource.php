@@ -2,24 +2,26 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DentistFactResource extends JsonResource
 {
-    public function toArray(Request $request): array
+    /**
+     * Transform the resource into an array.
+     */
+    public function toArray($request): array
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'facts' => $this->facts, // array of subtitle & description
-            'time_table_title' => $this->time_table_title,
-            'time_table_description' => $this->time_table_description,
-            'schedule' => $this->schedule, // array of day & time
-            'image' => $this->image ? asset('storage/' . $this->image) : null,
-            'background_image' => $this->background_image ? asset('storage/' . $this->background_image) : null,
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'id'                    => $this->id,
+            'title'                 => $this->getTranslations('title'),
+            'facts'                 => $this->facts, // already casted to array
+            'time_table_title'      => $this->getTranslations('time_table_title'),
+            'time_table_description'=> $this->getTranslations('time_table_description'),
+            'schedule'              => $this->schedule, // already casted to array
+            'image'                 => $this->image,
+            'background_image'      => $this->background_image,
+            'created_at'            => $this->created_at?->format('Y-m-d H:i:s'),
+            'updated_at'            => $this->updated_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

@@ -9,4 +9,11 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateDentistFact extends CreateRecord
 {
     protected static string $resource = DentistFactResource::class;
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\LocaleSwitcher::make(),
+
+        ];
+    }
 }

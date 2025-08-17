@@ -6,12 +6,20 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class StatisticResource extends JsonResource
 {
-    public function toArray($request)
+    /**
+     * Transform the resource into an array.
+     */
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
             'number' => $this->number,
-            'name' => $this->name,
+            'name' => [
+                'en' => $this->getTranslation('name', 'en'),
+                'ar' => $this->getTranslation('name', 'ar'),
+            ],
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }

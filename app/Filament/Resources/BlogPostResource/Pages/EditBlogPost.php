@@ -14,6 +14,8 @@ class EditBlogPost extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+                        Actions\LocaleSwitcher::make(),
+
         ];
     }
 }

@@ -6,90 +6,32 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProfessionClinicResource;
 use App\Models\ProfessionClinic;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ProfessionClinicController extends Controller
 {
     public function index()
     {
-        return ProfessionClinicResource::collection(ProfessionClinic::latest()->get());
-    }
-
-    public function show($id)
-    {
-        $record = ProfessionClinic::find($id);
-
-        if (!$record) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-
-        return new ProfessionClinicResource($record);
+        return ProfessionClinicResource::collection(ProfessionClinic::all());
     }
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title'       => 'required|string|max:255',
-            'subtitle'    => 'required|string|max:255',
-            'description' => 'required|string',
-            'image'       => 'required|image',
+        $data = $request->validate([
+            'title' => 'required|array',
+            'subtitle' => 'nullable|array',
+            'description' => 'nullable|array',
+            'image' => 'nullable|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+        $clinic = ProfessionClinic::create($data);
 
-        $path = $request->file('image')->store('profession-clinic', 'public');
-
-        $record = ProfessionClinic::create([
-            'title'       => $request->title,
-            'subtitle'    => $request->subtitle,
-            'description' => $request->description,
-            'image'       => $path,
-        ]);
-
-        return new ProfessionClinicResource($record);
+        return new ProfessionClinicResource($clinic);
     }
 
-    public function update(Request $request, $id)
+    public function show(ProfessionClinic $professionClinic)
     {
-        $record = ProfessionClinic::find($id);
-
-        if (!$record) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'title'       => 'sometimes|string|max:255',
-            'subtitle'    => 'sometimes|string|max:255',
-            'description' => 'sometimes|string',
-            'image'       => 'sometimes|image',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('profession-clinic', 'public');
-            $record->image = $path;
-        }
-
-        $record->update($request->only(['title', 'subtitle', 'description']));
-
-        return new ProfessionClinicResource($record);
+        return new ProfessionClinicResource($professionClinic);
     }
 
-    public function destroy($id)
-    {
-        $record = ProfessionClinic::find($id);
 
-        if (!$record) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-
-        $record->delete();
-
-        return response()->json(['message' => 'Deleted successfully']);
-    }
 }

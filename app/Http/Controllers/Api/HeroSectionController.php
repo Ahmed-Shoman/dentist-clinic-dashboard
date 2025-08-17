@@ -9,55 +9,29 @@ use Illuminate\Http\Request;
 
 class HeroSectionController extends Controller
 {
+    // List all hero sections
     public function index()
     {
         return HeroSectionResource::collection(HeroSection::all());
     }
 
-    public function show($id)
-    {
-        return new HeroSectionResource(HeroSection::findOrFail($id));
-    }
-
+    // Store new hero section
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'image' => 'nullable|image',
+            'title' => 'required|array',          // expects { en: "...", ar: "..." }
+            'description' => 'nullable|array',
+            'image' => 'nullable|string',
         ]);
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('hero-section', 'public');
-        }
+        $heroSection = HeroSection::create($data);
 
-        $hero = HeroSection::create($data);
-        return new HeroSectionResource($hero);
+        return new HeroSectionResource($heroSection);
     }
 
-    public function update(Request $request, $id)
+    // Show single hero section
+    public function show(HeroSection $heroSection)
     {
-        $hero = HeroSection::findOrFail($id);
-
-        $data = $request->validate([
-            'title' => 'sometimes|string',
-            'description' => 'sometimes|string',
-            'image' => 'nullable|image',
-        ]);
-
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('hero-section', 'public');
-        }
-
-        $hero->update($data);
-        return new HeroSectionResource($hero);
-    }
-
-    public function destroy($id)
-    {
-        $hero = HeroSection::findOrFail($id);
-        $hero->delete();
-
-        return response()->json(['message' => 'Deleted successfully']);
+        return new HeroSectionResource($heroSection);
     }
 }

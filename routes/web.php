@@ -1,16 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Config;
 
+// Route::get('/admin', function () {
+//     return redirect('/admin/dashboard');
+// });
 
+// Route::get('/login', function () {
+//     return response()->json(['message' => 'Please login'], 401);
+// })->name('login');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-route::get('/site',function(){
-
-    return config::get('services.site_name');
-});
+Route::redirect('/', '/admin/login');

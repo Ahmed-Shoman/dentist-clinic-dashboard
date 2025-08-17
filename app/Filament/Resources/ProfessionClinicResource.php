@@ -23,7 +23,7 @@ class ProfessionClinicResource extends Resource
         return __('admin.profession_clinic');
     }
 
-     public static function getNavigationLabel(): string
+    public static function getNavigationLabel(): string
     {
         return __('admin.professional_clinic');
     }
@@ -66,24 +66,57 @@ class ProfessionClinicResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            TextColumn::make('title')
-                ->label(__('profession_clinic.fields.title'))
-                ->searchable()
-                ->sortable(),
+        return $table
+            ->columns([
+                TextColumn::make('title')
+                    ->label(__('profession_clinic.fields.title'))
+                    ->searchable()
+                    ->sortable(),
 
-            TextColumn::make('subtitle')
-                ->label(__('profession_clinic.fields.subtitle'))
-                ->limit(50),
+                TextColumn::make('subtitle')
+                    ->label(__('profession_clinic.fields.subtitle'))
+                    ->limit(50),
 
-            TextColumn::make('description')
-                ->label(__('profession_clinic.fields.description'))
-                ->limit(50),
+                TextColumn::make('description')
+                    ->label(__('profession_clinic.fields.description'))
+                    ->limit(50),
 
-            ImageColumn::make('image')
-                ->label(__('profession_clinic.fields.image'))
-                ->square(),
-        ]);
+                ImageColumn::make('image')
+                    ->label(__('profession_clinic.fields.image'))
+                    ->square(),
+            ])
+            ->filters([
+                Tables\Filters\Filter::make('title')
+                    ->label(__('profession_clinic.filters.title'))
+                    ->query(fn ($query, $value) => $query->where('title', 'like', "%{$value}%"))
+                    ->form([
+                        Forms\Components\TextInput::make('title')
+                            ->label(__('profession_clinic.filters.title')),
+                    ]),
+
+                Tables\Filters\Filter::make('subtitle')
+                    ->label(__('profession_clinic.filters.subtitle'))
+                    ->query(fn ($query, $value) => $query->where('subtitle', 'like', "%{$value}%"))
+                    ->form([
+                        Forms\Components\TextInput::make('subtitle')
+                            ->label(__('profession_clinic.filters.subtitle')),
+                    ]),
+
+                Tables\Filters\Filter::make('created_at')
+                    ->label(__('profession_clinic.filters.created_at'))
+                    ->form([
+                        Forms\Components\DatePicker::make('created_from')
+                            ->label(__('profession_clinic.filters.from')),
+                        Forms\Components\DatePicker::make('created_until')
+                            ->label(__('profession_clinic.filters.to')),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['created_from'] ?? null, fn($q) => $q->whereDate('created_at', '>=', $data['created_from']))
+                            ->when($data['created_until'] ?? null, fn($q) => $q->whereDate('created_at', '<=', $data['created_until']));
+                    }),
+            ])
+            ->defaultSort('id', 'desc');
     }
 
     public static function getPages(): array

@@ -9,4 +9,11 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateStatistic extends CreateRecord
 {
     protected static string $resource = StatisticResource::class;
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\LocaleSwitcher::make(),
+
+        ];
+    }
 }

@@ -14,6 +14,8 @@ class EditProfessionClinic extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+                        Actions\LocaleSwitcher::make(),
+
         ];
     }
 }

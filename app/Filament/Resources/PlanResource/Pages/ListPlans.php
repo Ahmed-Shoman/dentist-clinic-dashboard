@@ -14,6 +14,8 @@ class ListPlans extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+                        Actions\LocaleSwitcher::make(),
+
         ];
     }
 }

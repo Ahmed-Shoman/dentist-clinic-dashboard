@@ -14,6 +14,8 @@ class EditComment extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+                        Actions\LocaleSwitcher::make(),
+
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
@@ -9,19 +9,17 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    // List all comments
     public function index()
     {
-        return CommentResource::collection(Comment::latest()->get());
+        return CommentResource::collection(Comment::all());
     }
 
-    // Store a new comment
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|array', // expect {'en': '...', 'ar': '...'}
+            'message' => 'required|array',
             'email' => 'required|email|max:255',
-            'message' => 'required|string',
         ]);
 
         $comment = Comment::create($data);
@@ -29,12 +27,10 @@ class CommentController extends Controller
         return new CommentResource($comment);
     }
 
-    // Show a single comment
     public function show(Comment $comment)
     {
         return new CommentResource($comment);
     }
-
 
 
 }

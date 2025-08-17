@@ -14,6 +14,8 @@ class EditDoctor extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+                        Actions\LocaleSwitcher::make(),
+
         ];
     }
 }

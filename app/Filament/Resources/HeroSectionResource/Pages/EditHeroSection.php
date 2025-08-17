@@ -14,6 +14,8 @@ class EditHeroSection extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+                        Actions\LocaleSwitcher::make(),
+
         ];
     }
 }

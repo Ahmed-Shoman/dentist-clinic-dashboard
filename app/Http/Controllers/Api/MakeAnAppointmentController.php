@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\MakeAnAppointmentResource;
 use App\Models\MakeAnAppointment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class MakeAnAppointmentController extends Controller
 {
@@ -15,83 +14,23 @@ class MakeAnAppointmentController extends Controller
         return MakeAnAppointmentResource::collection(MakeAnAppointment::all());
     }
 
-    public function show($id)
-    {
-        $record = MakeAnAppointment::find($id);
-        if (!$record) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-        return new MakeAnAppointmentResource($record);
-    }
-
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string',
-            'main_image'  => 'required|image',
-            'sub_image'   => 'required|image',
+        $data = $request->validate([
+            'title' => 'required|array',
+            'description' => 'required|array',
+            'main_image' => 'nullable|string',
+            'sub_image' => 'nullable|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+        $appointment = MakeAnAppointment::create($data);
 
-        $mainPath = $request->file('main_image')->store('make-appointment', 'public');
-        $subPath  = $request->file('sub_image')->store('make-appointment', 'public');
-
-        $record = MakeAnAppointment::create([
-            'title'       => $request->title,
-            'description' => $request->description,
-            'main_image'  => $mainPath,
-            'sub_image'   => $subPath,
-        ]);
-
-        return new MakeAnAppointmentResource($record);
+        return new MakeAnAppointmentResource($appointment);
     }
 
-    public function update(Request $request, $id)
+    public function show(MakeAnAppointment $makeAnAppointment)
     {
-        $record = MakeAnAppointment::find($id);
-        if (!$record) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'title'       => 'sometimes|string|max:255',
-            'description' => 'sometimes|string',
-            'main_image'  => 'sometimes|image',
-            'sub_image'   => 'sometimes|image',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        if ($request->hasFile('main_image')) {
-            $mainPath = $request->file('main_image')->store('make-appointment', 'public');
-            $record->main_image = $mainPath;
-        }
-
-        if ($request->hasFile('sub_image')) {
-            $subPath = $request->file('sub_image')->store('make-appointment', 'public');
-            $record->sub_image = $subPath;
-        }
-
-        $record->update($request->only(['title', 'description']));
-
-        return new MakeAnAppointmentResource($record);
+        return new MakeAnAppointmentResource($makeAnAppointment);
     }
 
-    public function destroy($id)
-    {
-        $record = MakeAnAppointment::find($id);
-        if (!$record) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-
-        $record->delete();
-
-        return response()->json(['message' => 'Deleted successfully']);
-    }
 }

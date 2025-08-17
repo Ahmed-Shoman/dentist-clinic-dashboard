@@ -11,17 +11,21 @@ class StatisticController extends Controller
 {
     public function index()
     {
-        return StatisticResource::collection(Statistic::latest()->get());
+        return StatisticResource::collection(Statistic::all());
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'number' => 'required|numeric',
-            'name' => 'required|string|max:255',
+            'number' => 'required|integer',
+            'name.en' => 'required|string',
+            'name.ar' => 'required|string',
         ]);
 
-        $statistic = Statistic::create($data);
+        $statistic = Statistic::create([
+            'number' => $data['number'],
+            'name' => $data['name'],
+        ]);
 
         return new StatisticResource($statistic);
     }
@@ -31,22 +35,7 @@ class StatisticController extends Controller
         return new StatisticResource($statistic);
     }
 
-    public function update(Request $request, Statistic $statistic)
-    {
-        $data = $request->validate([
-            'number' => 'sometimes|numeric',
-            'name' => 'sometimes|string|max:255',
-        ]);
 
-        $statistic->update($data);
 
-        return new StatisticResource($statistic);
-    }
 
-    public function destroy(Statistic $statistic)
-    {
-        $statistic->delete();
-
-        return response()->json(['message' => 'Deleted successfully']);
-    }
 }

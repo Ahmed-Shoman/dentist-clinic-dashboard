@@ -6,65 +6,39 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CertifiedDentistResource;
 use App\Models\CertifiedDentist;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CertifiedDentistController extends Controller
 {
     public function index()
     {
-        $dentists = CertifiedDentist::all();
-        return CertifiedDentistResource::collection($dentists);
+        return CertifiedDentistResource::collection(CertifiedDentist::all());
     }
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $data = $request->validate([
             'image' => 'nullable|string',
-            'name' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
-            'years_of_experience' => 'required|integer|min:0',
+            'name.en' => 'required|string',
+            'name.ar' => 'required|string',
+            'position.en' => 'required|string',
+            'position.ar' => 'required|string',
+            'years_of_experience' => 'nullable|integer',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $dentist = CertifiedDentist::create($validator->validated());
-
-        return new CertifiedDentistResource($dentist);
-    }
-
-    public function show($id)
-    {
-        $dentist = CertifiedDentist::findOrFail($id);
-        return new CertifiedDentistResource($dentist);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $dentist = CertifiedDentist::findOrFail($id);
-
-        $validator = Validator::make($request->all(), [
-            'image' => 'nullable|string',
-            'name' => 'sometimes|required|string|max:255',
-            'position' => 'sometimes|required|string|max:255',
-            'years_of_experience' => 'sometimes|required|integer|min:0',
+        $dentist = CertifiedDentist::create([
+            'image' => $data['image'] ?? null,
+            'name' => $data['name'],
+            'position' => $data['position'],
+            'years_of_experience' => $data['years_of_experience'] ?? null,
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $dentist->update($validator->validated());
-
         return new CertifiedDentistResource($dentist);
     }
 
-    public function destroy($id)
+    public function show(CertifiedDentist $certified_dentist)
     {
-        $dentist = CertifiedDentist::findOrFail($id);
-        $dentist->delete();
-
-        return response()->json(['message' => 'Deleted successfully']);
+        return new CertifiedDentistResource($certified_dentist);
     }
+
+
 }

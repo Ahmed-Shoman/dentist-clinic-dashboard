@@ -14,6 +14,8 @@ class EditCertifiedDentist extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+                        Actions\LocaleSwitcher::make(),
+
         ];
     }
 }

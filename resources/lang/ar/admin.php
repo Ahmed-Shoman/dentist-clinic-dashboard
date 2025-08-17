@@ -226,14 +226,14 @@ return [
              'home_page' => 'الصفحة الرئيسية',
     'comments' => 'التعليقات',
 
-    // Fields
+
     'name' => 'الاسم',
     'email' => 'البريد الإلكتروني',
     'message' => 'الرسالة',
     'created_at' => 'تاريخ الإنشاء',
     'comments' => 'اضف تعليق',
 
-    // Actions
+
     'edit' => 'تعديل',
     'delete' => 'حذف',
     'add_comment' => 'إضافة تعليق',
@@ -246,5 +246,52 @@ return [
     'Category' => 'التصنيف',
     'Published At' => 'تاريخ النشر',
     'Created At' => 'تاريخ الإنشاء',
+    'Position' => 'الوظيفة',
+    'doctor_name'=>'اسم الطبيب',
+    'our_service_title' => 'عنوان خدمتنا',
+    'our_service_sub_title' => 'العنوان الفرعي لخدمتنا',
+    'our_service_image' => 'صورة خدمتنا',
 
-    ];
+
+    'services_page' => 'صفحة الخدمات',
+    'service_page' => 'الخدمة',
+    'our_service_main_info' => 'المعلومات الرئيسية',
+    'our_service_title' => 'العنوان',
+    'our_service_sub_title' => 'العنوان الفرعي',
+    'services_list' => 'قائمة الخدمات',
+    'our_service_services' => 'الخدمات',
+    'our_service_image' => 'الصورة',
+    'our_service_name' => 'الاسم',
+    'our_service_description' => 'الوصف',
+    'our_service_actions__service' => 'إضافة خدمة',
+    'title' => 'العنوان',
+    'sub_title' => 'العنوان الفرعي',
+    'created_at' => 'تاريخ الإنشاء',
+    'our_service_list' => 'خدماتنا',
+     ' our_service_actions__service' => 'Add Service',
+
+
+    'blog_posts' => 'مقالات المدونة',
+
+    'Title' => 'العنوان',
+    'Description' => 'الوصف',
+    'Image' => 'الصورة',
+    'Category' => 'الفئة',
+    'Author' => 'المؤلف',
+    'Published At' => 'تاريخ النشر',
+    'Created At' => 'تاريخ الإنشاء',
+
+
+        'Title' => 'العنوان',
+        'Description' => 'الوصف',
+        'Image' => 'الصورة',
+        'Category' => 'الفئة',
+        'Author' => 'المؤلف',
+        'Published At' => 'تاريخ النشر',
+        'Created At' => 'تاريخ الإنشاء',
+    'Published_At' => 'تاريخ النشر',
+    'Created At' => 'تاريخ الإنشاء',
+
+
+
+];

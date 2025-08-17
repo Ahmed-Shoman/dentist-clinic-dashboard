@@ -3,47 +3,32 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OurServiceResource;
+use App\Models\OurService;
 use Illuminate\Http\Request;
 
 class OurServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return OurServiceResource::collection(OurService::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required|array',
+            'sub_title' => 'nullable|array',
+            'services' => 'nullable|array',
+        ]);
+
+        $service = OurService::create($data);
+
+        return new OurServiceResource($service);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(OurService $ourService)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return new OurServiceResource($ourService);
     }
 }

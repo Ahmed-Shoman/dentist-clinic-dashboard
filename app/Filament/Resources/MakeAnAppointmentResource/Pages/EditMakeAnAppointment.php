@@ -14,6 +14,8 @@ class EditMakeAnAppointment extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+                        Actions\LocaleSwitcher::make(),
+
         ];
     }
 }

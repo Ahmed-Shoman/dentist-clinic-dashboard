@@ -9,4 +9,11 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateOurService extends CreateRecord
 {
     protected static string $resource = OurServiceResource::class;
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\LocaleSwitcher::make(),
+
+        ];
+    }
 }

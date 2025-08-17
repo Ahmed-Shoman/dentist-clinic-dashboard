@@ -9,4 +9,11 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateHeroSection extends CreateRecord
 {
     protected static string $resource = HeroSectionResource::class;
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\LocaleSwitcher::make(),
+
+        ];
+    }
 }

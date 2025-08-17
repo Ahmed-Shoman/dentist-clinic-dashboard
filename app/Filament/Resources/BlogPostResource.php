@@ -5,23 +5,35 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BlogPostResource\Pages;
 use App\Models\BlogPost;
 use App\Models\Category;
-use Filament\Resources\Resource;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Forms\Components\Card;
+use Filament\Tables\Table;
+use Filament\Resources\Concerns\Translatable;
+
 
 
 class BlogPostResource extends Resource
 {
+
+    use Translatable;
+
+    // ...
+
+    public static function getTranslatableLocales(): array
+    {
+        return ['en', 'fr'];
+    }
+
     protected static ?string $model = BlogPost::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
@@ -43,10 +55,10 @@ class BlogPostResource extends Resource
                         ->required()
                         ->maxLength(255),
 
-                    TextInput::make('author')
-                        ->label('admin.Author')
-                        ->required()
-                        ->maxLength(255),
+                    // TextInput::make('author')
+                    //     ->label('admin.Author')
+                    //     ->required()
+                    //     ->maxLength(255),
 
                     Textarea::make('description')
                         ->label('admin.Description')
@@ -64,7 +76,7 @@ class BlogPostResource extends Resource
                         ->required(),
 
                     DatePicker::make('published_at')
-                        ->label('admin.Published At')
+                        ->label('admin.Published_At')
                         ->default(now()),
                 ])
         ]);

@@ -32,22 +32,22 @@ class OurServiceResource extends Resource
     {
         return $form
             ->schema([
-                Section::make(__('our_service.main_info'))
+                Section::make(__('admin.our_service_main_info'))
                     ->schema([
                         Forms\Components\TextInput::make('title')
-                            ->label(__('admin.our_service.fields.title'))
+                            ->label(__('admin.our_service_title'))
                             ->required(),
-                        Forms\Components\TextInput::make('sub_title')
-                            ->label(__('our_service.fields.sub_title')),
+                        Forms\Components\TextInput::make('admin.sub_title')
+                            ->label(__('admin.our_service_sub_title')),
                     ]),
 
-                Section::make(__('our_service.services_list'))
+                Section::make(__('admin.our_service_list'))
                     ->schema([
                         Forms\Components\Repeater::make('services')
-                            ->label(__('admin.our_service.fields.services'))
+                            ->label(__('admin.our_service_services'))
                             ->schema([
                                 Forms\Components\FileUpload::make('image')
-                                    ->label(__('our_service.fields.image'))
+                                    ->label(__('admin.our_service_image'))
                                     ->image()
                                     ->directory('admin.our_services')
                                     ->imagePreviewHeight(100)
@@ -55,14 +55,14 @@ class OurServiceResource extends Resource
 
                                 Forms\Components\TextInput::make('name')
                                     ->required()
-                                    ->label(__('admin.our_service.fields.service_name')),
+                                    ->label(__('admin.our_service_name')),
 
                                 Forms\Components\Textarea::make('description')
-                                    ->label(__('admin.our_service.fields.description'))
+                                    ->label(__('admin.our_service_description'))
                                     ->rows(3),
                             ])
                             ->columns(1)
-                            ->createItemButtonLabel(__('our_service.actions.add_service')),
+                            ->createItemButtonLabel(__('admin.our_service_actions__service')),
                     ]),
             ]);
     }

@@ -245,6 +245,51 @@ return [
     'Category' => 'Category',
     'Published At' => 'Published At',
     'Created At' => 'Created At',
+    'doctor_name'=>'Doctor Name',
+    'our_service_title' => 'Our Service Title',
+    'our_service_sub_title' => 'Our Service Subtitle',
+    'our_service_image' => 'Our Service Image',
+    'services_page' => 'Services Page',
+    'service_page' => 'Service',
+    'our_service_main_info' => 'Main Info',
+    'our_service_title' => 'Title',
+    'our_service_sub_title' => 'Subtitle',
+    'services_list' => 'Services List',
+    'our_service_services' => 'Services',
+    'our_service_image' => 'Image',
+    'our_service_name' => 'Name',
+    'our_service_description' => 'Description',
+    'our_service_actions__service' => 'Add Service',
+        'title' => 'Title',
+        'sub_title' => 'Subtitle',
+        'created_at' => 'Created At',
+            'our_service_list' => 'Our Services' ,
+      ' our_service_actions__service' => 'اضف خدمة جديدة',
+
+
+    'blog_posts' => 'Blog Posts',
+
+    'Title' => 'Title',
+    'Description' => 'Description',
+    'Image' => 'Image',
+    'Category' => 'Category',
+    'Author' => 'Author',
+    'Published At' => 'Published At',
+    'Created At' => 'Created At',
+
+
+        'Title' => 'Title',
+        'Description' => 'Description',
+        'Image' => 'Image',
+        'Category' => 'Category',
+        'Author' => 'Author',
+        'Published At' => 'Published At',
+        'Created At' => 'Created At',
+
+
+
+
+
 
 
 

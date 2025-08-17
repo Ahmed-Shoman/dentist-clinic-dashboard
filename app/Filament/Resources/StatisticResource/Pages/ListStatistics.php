@@ -14,6 +14,8 @@ class ListStatistics extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+                        Actions\LocaleSwitcher::make(),
+
         ];
     }
 }

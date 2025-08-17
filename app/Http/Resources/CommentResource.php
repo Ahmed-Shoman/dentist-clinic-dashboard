@@ -11,10 +11,11 @@ class CommentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => $this->getTranslation('name', app()->getLocale()),  // ترجمة تلقائية
             'email' => $this->email,
-            'message' => $this->message,
-            'created_at' => $this->created_at->toDateTimeString(),
+            'message' => $this->getTranslation('message', app()->getLocale()), // ترجمة تلقائية
+            'created_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }
