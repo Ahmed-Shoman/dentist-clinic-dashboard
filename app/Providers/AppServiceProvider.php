@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -18,12 +19,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-   public function boot()
-    {
+//    public function boot()
+//     {
 
-        LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
-            $switch
-                ->locales(['ar','en']);
-        });
-    }
+//         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
+//             $switch
+//                 ->locales(['ar','en']);
+//         });
+//     }
 }
