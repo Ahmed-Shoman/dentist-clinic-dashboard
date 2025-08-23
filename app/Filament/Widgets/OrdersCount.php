@@ -11,7 +11,7 @@ class OrdersCount extends BaseWidget
     protected function getCards(): array
     {
         return [
-            Card::make('عدد الطلبات', Order::count())
+            Card::make('عدد الطلبات', OrdersCount::count())
                 ->description('إجمالي الطلبات المسجلة')
                 ->descriptionIcon('heroicon-o-shopping-cart')
                 ->color('success'),
